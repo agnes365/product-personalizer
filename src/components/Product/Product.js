@@ -5,7 +5,7 @@ import ProductForm from '../ProductForm/ProductForm';
 import OptionSize from '../OptionSize/OptionSize';
 import OptionColor from '../OptionColor/OptionColor';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 const Product = ({ name, title, colors, sizes, basePrice }) => {
 
@@ -22,10 +22,10 @@ const Product = ({ name, title, colors, sizes, basePrice }) => {
     setCurrentSize(size);
   };
 
-  const getPrice = () => {
+  const getPrice = useMemo(() => {
     const size = sizes.find(item => item.name === currentSize);
     return basePrice + size.additionalPrice;
-  }
+  }, [currentSize]);
 
   const addToCart = (e) => {
     e.preventDefault();
@@ -43,7 +43,7 @@ const Product = ({ name, title, colors, sizes, basePrice }) => {
       <div>
         <header>
           <h2 className={styles.name}>{title}</h2>
-          <span className={styles.price}>Price: {getPrice()}$</span>
+          <span className={styles.price}>Price: {getPrice}$</span>
         </header>
         <ProductForm actionSubmit={addToCart}>
           <OptionSize sizes={sizes} currentSize={currentSize} actionSetSize={handleSetSize} />
